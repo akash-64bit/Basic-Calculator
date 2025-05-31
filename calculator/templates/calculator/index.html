@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="{% static 'calculator/style.css' %}">
+</head>
+<body>
+    <div class="calculator">
+        <form method="POST" id="calc-form">
+            {% csrf_token %}
+            <input type="hidden" name="display" id="hidden-display" value="{{ display }}">
+            <div class="display" id="display">{{ display }}</div>
+
+            <div class="button-grid">
+                {% for row in "789/456*123-0.+C="|make_list %}
+                    {% if row == '.' %}
+                        <button type="submit" name="button" value="." class="">.</button>
+                    {% elif row == '+' or row == '-' or row == '*' or row == '/' %}
+                        <button type="submit" name="button" value="{{ row }}" class="operator">{{ row }}</button>
+                    {% elif row == '=' %}
+                        <button type="submit" name="button" value="=" class="equal">=</button>
+                    {% elif row == 'C' %}
+                        <button type="submit" name="button" value="C" class="operator">C</button>
+                    {% else %}
+                        <button type="submit" name="button" value="{{ row }}">{{ row }}</button>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </form>
+    </div>
+
+    <script src="{% static 'calculator/script.js' %}"></script>
+</body>
+</html>
